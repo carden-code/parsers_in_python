@@ -1,3 +1,5 @@
+import json
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -27,12 +29,13 @@ def get_data(url):
 
         projects_urls.append(project_url)
 
-    for project_url in projects_urls[0:1]:
+    projects_data_list = []
+    for project_url in projects_urls:
         req = requests.get(project_url, headers)
         project_name = project_url.split("/")[-2]
 
-        # with open(f"data/{project_name}.html", "w") as file:
-        #     file.write(req.text)
+        with open(f"data/{project_name}.html", "w") as file:
+            file.write(req.text)
 
         with open(f"data/{project_name}.html") as file:
             src = file.read()
@@ -58,15 +61,26 @@ def get_data(url):
 
         try:
             project_website = project_data.find("div", class_="txt").find("p").find("a").text
-            print(project_website)
         except Exception:
             project_website = "No project site"
 
         try:
             project_full_description = project_data.find("div", class_="textWrap").find("div", class_="rBlock").text
-            print(project_full_description)
         except Exception:
             project_full_description = "No full description"
+
+        projects_data_list.append(
+            {
+                "Имя проекта:": project_name,
+                "URL логотипа проекта:": project_logo,
+                "Короткое описание:": project_short_description,
+                "Сайт проекта:": project_website,
+                "Полное описание проекта:": project_full_description.strip()
+            }
+        )
+
+    with open(f"data/projects_data.json", "a", encoding="utf-8") as file:
+        json.dump(projects_data_list, file, indent=4, ensure_ascii=False)
 
 
 
