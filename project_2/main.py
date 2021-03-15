@@ -67,7 +67,6 @@ for category_name, category_href in all_categories.items():
     soup = BeautifulSoup(src, "lxml")
 
     # Проверка страницы на наличие таблицы с продуктами
-
     alert_block = soup.find(class_="uk-alert-danger")
     if alert_block is not None:
         continue
