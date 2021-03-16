@@ -89,8 +89,8 @@ def get_data(url):
                 string = string.replace("\n", "")
                 return "".join(re.sub("<.*?>", "", string))
 
-            project_short_description = project_short_description.replace("  ", "")
             project_full_description = replace_string(project_full_description)
+            project_short_description = project_short_description.replace("  ", "")
 
             projects_data_list.append(
                 {
