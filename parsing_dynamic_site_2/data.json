@@ -1,0 +1,48 @@
+[
+    {
+        "person_name": "Dr. Michael von Abercron",
+        "person_party": "CDU/CSU",
+        "social_networks_urls": [
+            "http://www.von-abercron.de/",
+            "https://www.facebook.com/mvabercron/",
+            "https://twitter.com/mvabercron/"
+        ]
+    },
+    {
+        "person_name": "Doris Achelwilm",
+        "person_party": "The Left Party",
+        "social_networks_urls": [
+            "http://www.doris-achelwilm.de/",
+            "https://www.facebook.com/doris.achelwilm.dielinke/",
+            "https://twitter.com/DorisAchelwilm",
+            "https://www.instagram.com/doris_achelwilm/"
+        ]
+    },
+    {
+        "person_name": "Grigorios Aggelidis",
+        "person_party": "FDP",
+        "social_networks_urls": [
+            "http://www.grigorios-aggelidis.de",
+            "https://www.facebook.com/Aggelidis.Grigorios/?ref=ts&fref=ts",
+            "https://twitter.com/aggelidis_fdp?lang=de",
+            "https://www.instagram.com/grigorios.aggelidis/?hl=de"
+        ]
+    },
+    {
+        "person_name": "G\u00f6kay Akbulut",
+        "person_party": "The Left Party",
+        "social_networks_urls": [
+            "https://goekay-akbulut.de/",
+            "https://www.facebook.com/gokay.akbulut.146",
+            "https://twitter.com/akbulutgokay?lang=de",
+            "https://www.instagram.com/gokayakbulut_mdb_linke/?hl=de"
+        ]
+    },
+    {
+        "person_name": "Stephan Albani",
+        "person_party": "CDU/CSU",
+        "social_networks_urls": [
+            "http://www.stephan-albani.de"
+        ]
+    }
+]
