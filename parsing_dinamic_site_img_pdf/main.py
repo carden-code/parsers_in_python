@@ -1,4 +1,5 @@
 import requests
+import img2pdf
 
 
 def get_data():
@@ -9,6 +10,7 @@ def get_data():
                       " Chrome/89.0.4389.82 Safari/537.36"
     }
 
+    img_list = []
     for i in range(1, 49):
         url = f"http://recordpower.co.uk/flip/Winter2020/files/mobile/{i}.jpg"
         req = requests.get(url=url, headers=headers)
@@ -16,7 +18,16 @@ def get_data():
 
         with open(f"media/{i}.jpg", "wb") as file:
             file.write(response)
+            img_list.append(f"media/{i}.jpg")
             print(f"Downloaded {i} of 48")
+    print("#" * 20)
+    print(img_list)
+
+    # Конвертация в PDF
+    with open("result.pdf", "wb") as file:
+        file.write(img2pdf.convert(img_list))
+
+    print("PDF file created successfully")
 
 
 def main():
