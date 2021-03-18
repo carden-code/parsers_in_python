@@ -1,7 +1,7 @@
 import requests
-from bs4 import BeautifulSoup
-import lxml
 import json
+from bs4 import BeautifulSoup
+
 
 headers = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,"
@@ -11,10 +11,12 @@ headers = {
 }
 # Список всех ссылок фестевалей.
 fests_urls_list = []
+# for i in range(0, 24, 24):
+for i in range(0, 192, 24):
+    url = f"https://www.skiddle.com/festivals/search/?ajaxing=1&sort=0&fest_name=&from_date=24%20Jan%202021&to_date=" \
+          f"&where%5B%5D=2&where%5B%5D=3&where%5B%5D=4&where%5B%5D=6&where%5B%5D=" \
+          f"7&where%5B%5D=8&where%5B%5D=9&where%5B%5D=10&maxprice=500&o={i}&bannertitle=May"
 
-for i in range(0, 24, 24):
-    url = f"https://www.skiddle.com/festivals/search/?ajaxing=1&sort=0&fest_name=&from_date=17%20Mar%202021&to_date" \
-          f"=&genre%5B%5D=pop&maxprice=500&o={i}&bannertitle=July"
     req = requests.get(url=url, headers=headers)
     json_data = json.loads(req.text)
     html_response = json_data["html"]
@@ -32,12 +34,50 @@ for i in range(0, 24, 24):
         fest_url = "https://www.skiddle.com" + item.get('href')
         fests_urls_list.append(fest_url)
 
+# Сбор информации о каждом фестивале.
+fest_list_result = []
+count = 0
 for url in fests_urls_list:
+    count += 1
+    print(count)
+    print(url)
     req = requests.get(url=url, headers=headers)
 
     try:
         soup = BeautifulSoup(req.text, 'lxml')
         fest_info_block = soup.find("div", class_="top-info-cont")
         fest_name = fest_info_block.find("h1").text.strip()
+        fest_date = fest_info_block.find("h3").text.strip()
+        fest_location_link = "https://www.skiddle.com" + fest_info_block.find("a", class_="tc-white").get('href')
+
+        # Сбор данных - Контакты
+        req = requests.get(url=fest_location_link, headers=headers)
+        soup = BeautifulSoup(req.text, 'lxml')
+
+        contact_details = soup.find("h2", string="Venue contact details and info").find_next()
+        items = [item.text for item in contact_details.find_all("p")]
+
+        contact_details_dict = {}
+        for contact_detail in items:
+            contact_detail_list = contact_detail.split(":")
+
+            if len(contact_detail_list) == 3:
+                contact_details_dict[contact_detail_list[0].strip()] = contact_detail_list[1].strip() + ":"\
+                                                                       + contact_detail_list[2].strip()
+            else:
+                contact_details_dict[contact_detail_list[0].strip()] = contact_detail_list[1].strip()
+
+        fest_list_result.append(
+            {
+                "Fest name": fest_name,
+                "Fest date": fest_date,
+                "Fest contacts": contact_details_dict
+
+            }
+        )
     except Exception as ex:
         print(ex)
+        print("Что то пошло не так. Ошибочка...")
+
+with open("fest_list_result.json", "a", encoding="utf-8") as file:
+    json.dump(fest_list_result, file, indent=4, ensure_ascii=False)
